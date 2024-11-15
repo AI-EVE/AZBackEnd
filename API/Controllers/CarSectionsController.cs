@@ -50,13 +50,31 @@ namespace API.Controllers
 
             try
             {
-                CarSection newCarSection = await _repository.AddCarSectionAsync(carSection);
-                var newCarSectionResponse = new CarSectionSimpleResponse
-                {
-                    Id = newCarSection.Id,
-                    Name = newCarSection.Name
-                };
-                return CreatedAtAction(nameof(GetCarSection), new { id = newCarSection.Id }, newCarSectionResponse);
+                var newCarSectionResponse = await _repository.AddCarSectionAsync(carSection);
+
+                return CreatedAtAction(nameof(GetCarSection), new { id = newCarSectionResponse.Id }, newCarSectionResponse);
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23505")
+            {
+                return BadRequest(new { message = "Car Section name already exists" });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCarSection(int id, UpdateCarSectionSimpleRequest carSectionUpdateDto)
+        {
+            var carSection = await _repository.GetCarSectionByIdAsync(id);
+            if (carSection == null)
+            {
+                return NotFound();
+            }
+
+            carSection.Name = carSectionUpdateDto.Name;
+
+            try
+            {
+                await _repository.SaveChangesAsync();
+                return NoContent();
             }
             catch (DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23505")
             {
@@ -84,27 +102,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCarSection(int id, UpdateCarSectionSimpleRequest carSectionUpdateDto)
-        {
-            var carSection = await _repository.GetCarSectionByIdAsync(id);
-            if (carSection == null)
-            {
-                return NotFound();
-            }
 
-            carSection.Name = carSectionUpdateDto.Name;
-
-            try
-            {
-                await _repository.SaveChangesAsync();
-                return NoContent();
-            }
-            catch (DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23505")
-            {
-                return BadRequest(new { message = "Car Section name already exists" });
-            }
-        }
 
 
     }

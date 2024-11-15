@@ -9,7 +9,7 @@ public interface ICarSectionRepository
 {
     Task<List<CarSectionSimpleResponse>> GetCarSectionsAsync(CarSectionFilters filters);
     Task<CarSection?> GetCarSectionByIdAsync(int id);
-    Task<CarSection> AddCarSectionAsync(AddCarSectionSimpleRequest carSection);
-    Task<CarSection> DeleteCarSectionAsync(CarSection carSection);
+    Task<CarSectionSimpleResponse> AddCarSectionAsync(AddCarSectionSimpleRequest carSection);
+    Task DeleteCarSectionAsync(CarSection carSection);
     Task<bool> SaveChangesAsync();
 }

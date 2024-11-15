@@ -10,7 +10,7 @@ namespace API.Repositories;
 
 public class CarSectionRepository(ApplicationDbContext context) : ICarSectionRepository
 {
-    public async Task<CarSection> AddCarSectionAsync(AddCarSectionSimpleRequest carSection)
+    public async Task<CarSectionSimpleResponse> AddCarSectionAsync(AddCarSectionSimpleRequest carSection)
     {
         var newCarSection = new CarSection
         {
@@ -19,14 +19,20 @@ public class CarSectionRepository(ApplicationDbContext context) : ICarSectionRep
 
         context.CarSections.Add(newCarSection);
         await context.SaveChangesAsync();
-        return newCarSection;
+
+        var newCarSectionResponse = new CarSectionSimpleResponse
+        {
+            Id = newCarSection.Id,
+            Name = newCarSection.Name
+        };
+
+        return newCarSectionResponse;
     }
 
-    public async Task<CarSection> DeleteCarSectionAsync(CarSection carSection)
+    public async Task DeleteCarSectionAsync(CarSection carSection)
     {
         context.CarSections.Remove(carSection);
         await context.SaveChangesAsync();
-        return carSection;
     }
 
     public async Task<CarSection?> GetCarSectionByIdAsync(int id)

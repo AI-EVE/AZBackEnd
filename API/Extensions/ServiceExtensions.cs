@@ -14,6 +14,7 @@ public static class ServiceExtensions
         services.AddScoped<ICarModelRepository, CarModelRepository>();
         services.AddScoped<ICarGenerationRepository, CarGenerationRepository>();
         services.AddScoped<ICarSectionRepository, CarSectionRepository>();
+        services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
         services.AddScoped<IBlobService, BlobService>();
         services.AddScoped<IUploadImageService, UploadImageService>();
         services.AddScoped<IDeleteImageService, DeleteImageService>();
