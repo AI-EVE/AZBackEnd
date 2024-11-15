@@ -1,5 +1,7 @@
 using System;
 using API.Data;
+using API.DTOs.CarSectionDTOs;
+using API.Filters;
 using API.IRepositories;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,11 +10,16 @@ namespace API.Repositories;
 
 public class CarSectionRepository(ApplicationDbContext context) : ICarSectionRepository
 {
-    public async Task<CarSection> AddCarSectionAsync(CarSection carSection)
+    public async Task<CarSection> AddCarSectionAsync(AddCarSectionSimpleRequest carSection)
     {
-        await context.CarSections.AddAsync(carSection);
+        var newCarSection = new CarSection
+        {
+            Name = carSection.Name
+        };
+
+        context.CarSections.Add(newCarSection);
         await context.SaveChangesAsync();
-        return carSection;
+        return newCarSection;
     }
 
     public async Task<CarSection> DeleteCarSectionAsync(CarSection carSection)
@@ -27,9 +34,19 @@ public class CarSectionRepository(ApplicationDbContext context) : ICarSectionRep
         return await context.CarSections.FirstOrDefaultAsync(cs => cs.Id == id);
     }
 
-    public async Task<IEnumerable<CarSection>> GetCarSectionsAsync()
+    public async Task<List<CarSectionSimpleResponse>> GetCarSectionsAsync(CarSectionFilters filters)
     {
-        return await context.CarSections.ToListAsync();
+        var query = context.CarSections.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(filters.Name))
+        {
+            query = query.Where(cs => cs.Name.Contains(filters.Name));
+        }
+
+        return await query.Select(cs => new CarSectionSimpleResponse
+        {
+            Id = cs.Id,
+            Name = cs.Name
+        }).ToListAsync();
     }
 
     public async Task<bool> SaveChangesAsync()

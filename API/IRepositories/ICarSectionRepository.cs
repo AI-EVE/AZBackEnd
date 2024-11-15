@@ -1,13 +1,15 @@
 using System;
+using API.DTOs.CarSectionDTOs;
+using API.Filters;
 using API.Models;
 
 namespace API.IRepositories;
 
 public interface ICarSectionRepository
 {
-    Task<IEnumerable<CarSection>> GetCarSectionsAsync();
+    Task<List<CarSectionSimpleResponse>> GetCarSectionsAsync(CarSectionFilters filters);
     Task<CarSection?> GetCarSectionByIdAsync(int id);
-    Task<CarSection> AddCarSectionAsync(CarSection carSection);
+    Task<CarSection> AddCarSectionAsync(AddCarSectionSimpleRequest carSection);
     Task<CarSection> DeleteCarSectionAsync(CarSection carSection);
     Task<bool> SaveChangesAsync();
 }

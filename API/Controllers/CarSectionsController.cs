@@ -1,4 +1,5 @@
 using API.DTOs.CarSectionDTOs;
+using API.Filters;
 using API.IRepositories;
 using API.Models;
 using Microsoft.AspNetCore.Http;
@@ -18,30 +19,44 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CarSection>>> GetCarSections()
+        public async Task<ActionResult<List<CarSectionSimpleResponse>>> GetCarSections([FromQuery] CarSectionFilters filters)
         {
-            var carSections = await _repository.GetCarSectionsAsync();
+            var carSections = await _repository.GetCarSectionsAsync(filters);
+
             return Ok(carSections);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CarSection>> GetCarSection(int id)
+        public async Task<ActionResult<CarSectionSimpleResponse>> GetCarSection(int id)
         {
             var carSection = await _repository.GetCarSectionByIdAsync(id);
             if (carSection == null)
             {
                 return NotFound();
             }
-            return Ok(carSection);
+
+            var carSectionResponse = new CarSectionSimpleResponse
+            {
+                Id = carSection.Id,
+                Name = carSection.Name
+            };
+
+            return Ok(carSectionResponse);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CarSection>> PostCarSection(CarSection carSection)
+        public async Task<ActionResult<CarSectionSimpleResponse>> PostCarSection(AddCarSectionSimpleRequest carSection)
         {
+
             try
             {
-                var newCarSection = await _repository.AddCarSectionAsync(carSection);
-                return CreatedAtAction(nameof(GetCarSection), new { id = newCarSection.Id }, newCarSection);
+                CarSection newCarSection = await _repository.AddCarSectionAsync(carSection);
+                var newCarSectionResponse = new CarSectionSimpleResponse
+                {
+                    Id = newCarSection.Id,
+                    Name = newCarSection.Name
+                };
+                return CreatedAtAction(nameof(GetCarSection), new { id = newCarSection.Id }, newCarSectionResponse);
             }
             catch (DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23505")
             {
@@ -50,7 +65,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<CarSection>> DeleteCarSection(int id)
+        public async Task<IActionResult> DeleteCarSection(int id)
         {
             var carSection = await _repository.GetCarSectionByIdAsync(id);
             if (carSection == null)
@@ -61,7 +76,7 @@ namespace API.Controllers
             try
             {
                 await _repository.DeleteCarSectionAsync(carSection);
-                return Ok(carSection);
+                return NoContent();
             }
             catch (DbUpdateException ex) when (ex.InnerException is Npgsql.PostgresException pgEx && pgEx.SqlState == "23503")
             {
@@ -70,7 +85,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCarSection(int id, CarSectionUpdateDto carSectionUpdateDto)
+        public async Task<IActionResult> PutCarSection(int id, UpdateCarSectionSimpleRequest carSectionUpdateDto)
         {
             var carSection = await _repository.GetCarSectionByIdAsync(id);
             if (carSection == null)

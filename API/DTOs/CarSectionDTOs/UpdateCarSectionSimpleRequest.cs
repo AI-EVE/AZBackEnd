@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs.CarSectionDTOs;
 
-public class CarSectionUpdateDto
+public class UpdateCarSectionSimpleRequest
 {
     [Required]
     public string Name { get; set; } = null!;
