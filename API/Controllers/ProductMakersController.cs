@@ -10,13 +10,13 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductMakerController : ControllerBase
+    public class ProductMakersController : ControllerBase
     {
         private readonly IProductMakerRepository _productMakerRepository;
         private readonly IUploadImageService _uploadImageService;
         private readonly IDeleteImageService _deleteImageService;
 
-        public ProductMakerController(IProductMakerRepository productMakerRepository, IUploadImageService uploadImageService, IDeleteImageService deleteImageService)
+        public ProductMakersController(IProductMakerRepository productMakerRepository, IUploadImageService uploadImageService, IDeleteImageService deleteImageService)
         {
             _productMakerRepository = productMakerRepository;
             _uploadImageService = uploadImageService;
