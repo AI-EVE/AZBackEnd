@@ -14,6 +14,6 @@ public class Shop
     public List<ShopImage> ShopImages { get; set; } = [];
     public List<ShopSocial> ShopSocials { get; set; } = [];
     public List<ShopPhone> ShopPhones { get; set; } = [];
-    public List<ShopBillImage> ShopProducts { get; set; } = [];
+    public List<ShopBillImage> ShopBillImages { get; set; } = [];
     public List<ProductBought> ProductsBought { get; set; } = [];
 }

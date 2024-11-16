@@ -275,7 +275,7 @@ public class ApplicationDbContext : DbContext
         {
             entity
             .HasOne(sb => sb.Shop)
-            .WithMany(s => s.ShopProducts)
+            .WithMany(s => s.ShopBillImages)
             .HasForeignKey(sb => sb.ShopId)
             .OnDelete(DeleteBehavior.Cascade);
         });
