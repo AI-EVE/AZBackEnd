@@ -63,12 +63,14 @@ namespace API.Controllers
             }
             catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx && pgEx.SqlState == "23505")
             {
+                if (logoUrl != null) await _deleteImageService.DeleteImage(logoUrl);
+
                 return BadRequest(new { message = "Product Maker name already exists" });
             }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromForm] UpdateProductMakerSimpleRequest request)
+        public async Task<ActionResult<ProductMakerSimpleResponse>> Update(int id, [FromForm] UpdateProductMakerSimpleRequest request)
         {
             var productMaker = await _productMakerRepository.GetByIdAsync(id);
 
@@ -86,10 +88,17 @@ namespace API.Controllers
             {
                 await _productMakerRepository.SaveChangesAsync();
                 await _deleteImageService.DeleteImage(oldLogoUrl);
-                return NoContent();
+                return Ok(new ProductMakerSimpleResponse
+                {
+                    Id = productMaker.Id,
+                    Name = productMaker.Name,
+                    LogoUrl = productMaker.LogoUrl
+                });
             }
             catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx && pgEx.SqlState == "23505")
             {
+                if (logoUrl != null) await _deleteImageService.DeleteImage(logoUrl);
+
                 return BadRequest(new { message = "Product Maker name already exists" });
             }
         }
