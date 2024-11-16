@@ -76,7 +76,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<SocialTypeSimpleResponse>> Update(int id, [FromForm] AddSocialTypeSimpleRequest socialType)
+        public async Task<ActionResult<SocialTypeSimpleResponse>> Update(int id, [FromForm] UpdateSocialTypeSimpleRequest socialType)
         {
             var existingSocialType = await _socialTypeRepository.GetByIdAsync(id);
             if (existingSocialType == null)
