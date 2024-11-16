@@ -78,6 +78,11 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<SocialTypeSimpleResponse>> Update(int id, [FromForm] UpdateSocialTypeSimpleRequest socialType)
         {
+            if (socialType.Type != null && await _socialTypeRepository.NameExistsAsync(socialType.Type))
+            {
+                return BadRequest(new { Message = "Name already exists" });
+            }
+
             var existingSocialType = await _socialTypeRepository.GetByIdAsync(id);
             if (existingSocialType == null)
             {

@@ -49,6 +49,11 @@ public class ProductMakerRepository(ApplicationDbContext context) : IProductMake
         return productMaker;
     }
 
+    public async Task<bool> NameExistsAsync(string name)
+    {
+        return await context.ProductMakers.AnyAsync(productMaker => productMaker.Name == name);
+    }
+
     public async Task<bool> SaveChangesAsync()
     {
         return await context.SaveChangesAsync() > 0;

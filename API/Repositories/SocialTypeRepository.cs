@@ -46,6 +46,11 @@ public class SocialTypeRepository(ApplicationDbContext context) : ISocialTypeRep
         return await context.SocialTypes.FindAsync(id);
     }
 
+    public async Task<bool> NameExistsAsync(string name)
+    {
+        return await context.SocialTypes.AnyAsync(socialType => socialType.Type == name);
+    }
+
     public async Task<bool> SaveChangesAsync()
     {
         return await context.SaveChangesAsync() > 0;

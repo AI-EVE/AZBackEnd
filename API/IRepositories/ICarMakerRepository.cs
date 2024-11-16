@@ -10,5 +10,7 @@ public interface ICarMakerRepository
     Task<CarMakerFullResponse?> GetFullCarMakerAsync(int id);
     Task<CarMakerSimpleResponse?> AddCarMakerAsync(string name, string logoUrl);
     Task<bool> DeleteCarMakerAsync(CarMaker carMaker);
+    Task<bool> NameExistsAsync(string name);
+
     Task<bool> SaveChangesAsync();
 }

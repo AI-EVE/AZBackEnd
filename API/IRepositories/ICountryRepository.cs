@@ -10,5 +10,7 @@ public interface ICountryRepository
     Task<Country?> GetByIdAsync(int id);
     Task<CountrySimpleResponse> AddAsync(Country country);
     Task DeleteAsync(Country country);
+    Task<bool> NameExistsAsync(string name);
+
     Task<bool> SaveChangesAsync();
 }

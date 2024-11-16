@@ -79,22 +79,22 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductMakerSimpleResponse>> Update(int id, [FromForm] UpdateProductMakerSimpleRequest request)
         {
-            var productMaker = await _productMakerRepository.GetByIdAsync(id);
-
-            if (productMaker == null)
+            if (!string.IsNullOrEmpty(request.Name) && await _productMakerRepository.NameExistsAsync(request.Name))
             {
-                return NotFound();
+                return BadRequest(new { message = "Product Maker name already exists" });
             }
+
+            var productMaker = await _productMakerRepository.GetByIdAsync(id);
+            if (productMaker == null) return NotFound();
+
+
             var oldLogoUrl = productMaker.LogoUrl;
-            string? logoUrl;
+            string? logoUrl = null;
             if (request.Logo != null)
             {
                 logoUrl = await _uploadImageService.UploadImage(request.Logo) ?? throw new Exception("Failed to upload image");
             }
-            else
-            {
-                logoUrl = null;
-            }
+
 
             productMaker.Name = request.Name ?? productMaker.Name;
             productMaker.LogoUrl = logoUrl ?? productMaker.LogoUrl;

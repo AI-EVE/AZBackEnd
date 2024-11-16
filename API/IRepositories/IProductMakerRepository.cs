@@ -9,5 +9,7 @@ public interface IProductMakerRepository
     Task<ProductMaker?> GetByIdAsync(int id);
     Task<ProductMakerSimpleResponse> AddAsync(ProductMaker productMaker);
     Task DeleteAsync(ProductMaker productMaker);
+    Task<bool> NameExistsAsync(string name);
+
     Task<bool> SaveChangesAsync();
 }

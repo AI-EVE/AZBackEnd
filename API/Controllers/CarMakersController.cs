@@ -44,7 +44,7 @@ namespace API.Controllers
 
             if (logoUrl == null)
             {
-                return BadRequest("Logo is required");
+                return BadRequest(new { message = "Logo could not be uploaded." });
             }
 
             var carMakerSimpleResponse = await _carMakerRepository.AddCarMakerAsync(addCarMakerSimpleRequest.Name, logoUrl);
@@ -77,18 +77,20 @@ namespace API.Controllers
                 return Ok();
             }
 
-            return BadRequest("Car maker could not be deleted because it is being used by a car generation that is related to a car or a product.");
+            return BadRequest(new { message = "Car maker could not be deleted because it is being used by a car generation that is related to a car or a product." });
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCarMakerAsync(int id, [FromForm] UpdateCarMakerSimpleRequest updateCarMakerSimpleRequest, IUploadImageService uploadImageService, IDeleteImageService deleteImageService)
         {
-            var carMaker = await _carMakerRepository.GetCarMakerAsync(id);
-
-            if (carMaker == null)
+            if (!string.IsNullOrEmpty(updateCarMakerSimpleRequest.Name) && await _carMakerRepository.NameExistsAsync(updateCarMakerSimpleRequest.Name))
             {
-                return NotFound();
+                return BadRequest(new { message = "Car maker could not be updated because it name is already being used." });
             }
+
+            var carMaker = await _carMakerRepository.GetCarMakerAsync(id);
+            if (carMaker == null) return NotFound();
+
 
             string? logoUrl = null;
 
@@ -107,7 +109,7 @@ namespace API.Controllers
 
             if (logoUrl != null) await deleteImageService.DeleteImage(logoUrl);
 
-            return BadRequest("Car maker could not be updated because it name is already being used.");
+            return BadRequest(new { message = "Car maker could not be updated." });
         }
     }
 }

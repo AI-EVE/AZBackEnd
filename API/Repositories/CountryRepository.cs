@@ -49,6 +49,11 @@ public class CountryRepository(ApplicationDbContext context) : ICountryRepositor
         return country;
     }
 
+    public async Task<bool> NameExistsAsync(string name)
+    {
+        return await context.Countries.AnyAsync(country => country.Name == name);
+    }
+
     public async Task<bool> SaveChangesAsync()
     {
         return await context.SaveChangesAsync() > 0;

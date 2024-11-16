@@ -79,6 +79,11 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<CountrySimpleResponse>> Update(int id, [FromForm] UpdateCountrySimpleRequest request)
         {
+            if (!string.IsNullOrEmpty(request.Name) && await _countryRepository.NameExistsAsync(request.Name))
+            {
+                return BadRequest(new { message = "Country name already exists" });
+            }
+
             var country = await _countryRepository.GetByIdAsync(id);
 
             if (country == null)

@@ -92,4 +92,9 @@ public class CarMakerRepository(ApplicationDbContext context) : ICarMakerReposit
             return false;
         }
     }
+
+    public async Task<bool> NameExistsAsync(string name)
+    {
+        return await _context.CarMakers.AnyAsync(c => c.Name == name);
+    }
 }
