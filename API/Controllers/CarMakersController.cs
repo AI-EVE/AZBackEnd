@@ -56,7 +56,7 @@ namespace API.Controllers
             if (carMakerSimpleResponse == null)
             {
                 await deleteImageService.DeleteImage(logoUrl);
-                return Conflict();
+                return BadRequest(new { message = "Logo could not be uploaded." });
             }
 
             return Ok(carMakerSimpleResponse);
@@ -89,7 +89,7 @@ namespace API.Controllers
         {
             if (!string.IsNullOrEmpty(updateCarMakerSimpleRequest.Name) && await _carMakerRepository.NameExistsAsync(updateCarMakerSimpleRequest.Name))
             {
-                return BadRequest(new { message = "Car maker could not be updated because it name is already being used." });
+                return BadRequest(new { message = "Car maker could not be updated because its name is already being used." });
             }
 
             var carMaker = await _carMakerRepository.GetCarMakerAsync(id);
