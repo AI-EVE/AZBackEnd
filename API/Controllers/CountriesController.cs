@@ -41,7 +41,14 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(country);
+            var countryResponse = new CountrySimpleResponse
+            {
+                Id = country.Id,
+                Name = country.Name,
+                FlagUrl = country.FlagUrl
+            };
+
+            return Ok(countryResponse);
         }
 
         [HttpPost]

@@ -41,7 +41,14 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(productMaker);
+            var productMakerResponse = new ProductMakerSimpleResponse
+            {
+                Id = productMaker.Id,
+                Name = productMaker.Name,
+                LogoUrl = productMaker.LogoUrl
+            };
+
+            return Ok(productMakerResponse);
         }
 
         [HttpPost]
