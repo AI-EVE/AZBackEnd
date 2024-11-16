@@ -86,7 +86,15 @@ namespace API.Controllers
                 return NotFound();
             }
             var oldLogoUrl = productMaker.LogoUrl;
-            var logoUrl = await _uploadImageService.UploadImage(request.Logo);
+            string? logoUrl;
+            if (request.Logo != null)
+            {
+                logoUrl = await _uploadImageService.UploadImage(request.Logo) ?? throw new Exception("Failed to upload image");
+            }
+            else
+            {
+                logoUrl = null;
+            }
 
             productMaker.Name = request.Name ?? productMaker.Name;
             productMaker.LogoUrl = logoUrl ?? productMaker.LogoUrl;
@@ -94,7 +102,12 @@ namespace API.Controllers
             try
             {
                 await _productMakerRepository.SaveChangesAsync();
-                await _deleteImageService.DeleteImage(oldLogoUrl);
+
+                if (logoUrl != null)
+                {
+                    await _deleteImageService.DeleteImage(oldLogoUrl);
+                }
+
                 return Ok(new ProductMakerSimpleResponse
                 {
                     Id = productMaker.Id,

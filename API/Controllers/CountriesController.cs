@@ -94,7 +94,10 @@ namespace API.Controllers
             try
             {
                 await _countryRepository.SaveChangesAsync();
-                await _deleteImageService.DeleteImage(oldFlagUrl);
+                if (flagUrl != null)
+                {
+                    await _deleteImageService.DeleteImage(oldFlagUrl);
+                }
                 return Ok(new CountrySimpleResponse
                 {
                     Id = country.Id,
