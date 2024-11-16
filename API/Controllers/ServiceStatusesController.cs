@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceStatusSimpleResponse>> GetServiceStatusAsync(int id)
+        public async Task<ActionResult<ServiceStatusSimpleResponse>> GetServiceStatusAsyncById(int id)
         {
             var serviceStatus = await _serviceStatusRepository.GetServiceStatusAsync(id);
 
@@ -34,16 +34,26 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(serviceStatus);
+            var serviceStatusResponse = new ServiceStatusSimpleResponse
+            {
+                Id = serviceStatus.Id,
+                Status = serviceStatus.Status,
+                Description = serviceStatus.Description
+            };
+
+            return Ok(serviceStatusResponse);
         }
+
+
 
         [HttpPost]
         public async Task<ActionResult<ServiceStatusSimpleResponse>> AddServiceStatusAsync(AddServiceStatusSimpleRequest request)
         {
+
             try
             {
                 var serviceStatusResponse = await _serviceStatusRepository.AddServiceStatusAsync(request);
-                return CreatedAtAction(nameof(GetServiceStatusAsync), new { id = serviceStatusResponse.Id }, serviceStatusResponse);
+                return CreatedAtAction(nameof(GetServiceStatusAsyncById), new { id = serviceStatusResponse.Id }, serviceStatusResponse);
             }
             catch (DbUpdateException ex) when ((ex.InnerException is PostgresException pgEx) && (pgEx.SqlState == "23505"))
             {
@@ -81,7 +91,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateServiceStatusAsync(int id, AddServiceStatusSimpleRequest request)
+        public async Task<ActionResult<ServiceStatusSimpleResponse>> UpdateServiceStatusAsync(int id, AddServiceStatusSimpleRequest request)
         {
             var serviceStatus = await _serviceStatusRepository.GetServiceStatusAsync(id);
 
@@ -96,7 +106,12 @@ namespace API.Controllers
             try
             {
                 await _serviceStatusRepository.SaveChangesAsync();
-                return NoContent();
+                return Ok(new ServiceStatusSimpleResponse
+                {
+                    Id = serviceStatus.Id,
+                    Status = serviceStatus.Status,
+                    Description = serviceStatus.Description
+                });
             }
             catch (DbUpdateException ex) when ((ex.InnerException is PostgresException pgEx) && (pgEx.SqlState == "23505"))
             {
