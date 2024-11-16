@@ -40,8 +40,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCarMakerAsync([FromForm] AddCarMakerSimpleRequest addCarMakerSimpleRequest, IUploadImageService uploadImageService, IDeleteImageService deleteImageService)
         {
-            var logoUrl = await uploadImageService.UploadImage(addCarMakerSimpleRequest.Logo);
+            if (await _carMakerRepository.NameExistsAsync(addCarMakerSimpleRequest.Name))
+            {
+                return BadRequest(new { message = "Car maker could not be added because it name is already being used." });
+            }
 
+            var logoUrl = await uploadImageService.UploadImage(addCarMakerSimpleRequest.Logo);
             if (logoUrl == null)
             {
                 return BadRequest(new { message = "Logo could not be uploaded." });

@@ -54,8 +54,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductMakerSimpleResponse>> Add([FromForm] AddProductMakerSimpleRequest request)
         {
-            var logoUrl = await _uploadImageService.UploadImage(request.Logo) ?? throw new Exception("Failed to upload image");
+            if (await _productMakerRepository.NameExistsAsync(request.Name))
+            {
+                return BadRequest(new { message = "Product Maker name already exists" });
+            }
 
+            var logoUrl = await _uploadImageService.UploadImage(request.Logo) ?? throw new Exception("Failed to upload image");
             var productMaker = new ProductMaker
             {
                 Name = request.Name,

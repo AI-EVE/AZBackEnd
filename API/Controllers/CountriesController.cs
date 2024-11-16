@@ -54,8 +54,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<CountrySimpleResponse>> Add([FromForm] AddCountrySimpleRequest request)
         {
-            var flagUrl = await _uploadImageService.UploadImage(request.Flag) ?? throw new Exception("Failed to upload image");
+            if (await _countryRepository.NameExistsAsync(request.Name))
+            {
+                return BadRequest(new { message = "Country name already exists" });
+            }
 
+            var flagUrl = await _uploadImageService.UploadImage(request.Flag) ?? throw new Exception("Failed to upload image");
             var country = new Country
             {
                 Name = request.Name,

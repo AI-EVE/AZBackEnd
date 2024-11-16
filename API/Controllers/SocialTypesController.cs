@@ -54,8 +54,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<SocialTypeSimpleResponse>> Add([FromForm] AddSocialTypeSimpleRequest socialType)
         {
-            var logoUrl = await _uploadImageService.UploadImage(socialType.Logo) ?? throw new Exception("Image upload failed");
+            if (await _socialTypeRepository.NameExistsAsync(socialType.Type))
+            {
+                return BadRequest(new { message = "Social type already exists" });
+            }
 
+            var logoUrl = await _uploadImageService.UploadImage(socialType.Logo) ?? throw new Exception("Image upload failed");
             var newSocialType = new SocialType
             {
                 Type = socialType.Type,
