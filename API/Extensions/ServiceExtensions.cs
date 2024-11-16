@@ -18,6 +18,7 @@ public static class ServiceExtensions
         services.AddScoped<IProductMakerRepository, ProductMakerRepository>();
         services.AddScoped<ICountryRepository, CountryRepository>();
         services.AddScoped<ISocialTypeRepository, SocialTypeRepository>();
+        services.AddScoped<IServiceStatusRepository, ServiceStatusRepository>();
         services.AddScoped<IBlobService, BlobService>();
         services.AddScoped<IUploadImageService, UploadImageService>();
         services.AddScoped<IDeleteImageService, DeleteImageService>();
