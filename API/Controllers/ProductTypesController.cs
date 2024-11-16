@@ -52,7 +52,7 @@ namespace API.Controllers
             }
             catch (DbUpdateException ex) when ((ex.InnerException is PostgresException pgEx) && (pgEx.SqlState == "23505"))
             {
-                return BadRequest(new { Message = "Product type already exists" });
+                return BadRequest(new { message = "Product type already exists" });
             }
         }
 
@@ -74,7 +74,7 @@ namespace API.Controllers
             }
             catch (DbUpdateException ex) when ((ex.InnerException is PostgresException pgEx) && (pgEx.SqlState == "23505"))
             {
-                return BadRequest(new { Message = "Product type already exists" });
+                return BadRequest(new { message = "Product type already exists" });
             }
         }
 
@@ -93,7 +93,7 @@ namespace API.Controllers
             }
             catch (DbUpdateException ex) when ((ex.InnerException is PostgresException pgEx) && (pgEx.SqlState == "23503"))
             {
-                return BadRequest(new { Message = "Product type is in use" });
+                return BadRequest(new { message = "Product type is in use" });
             }
         }
     }

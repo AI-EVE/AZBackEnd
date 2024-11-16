@@ -71,7 +71,7 @@ namespace API.Controllers
             catch (DbUpdateException ex) when ((ex.InnerException is PostgresException pgEx) && (pgEx.SqlState == "23505"))
             {
                 await _deleteImageService.DeleteImage(logoUrl);
-                return BadRequest(new { Message = "Social type already exists" });
+                return BadRequest(new { message = "Social type already exists" });
             }
         }
 
@@ -80,7 +80,7 @@ namespace API.Controllers
         {
             if (socialType.Type != null && await _socialTypeRepository.NameExistsAsync(socialType.Type))
             {
-                return BadRequest(new { Message = "Name already exists" });
+                return BadRequest(new { message = "Name already exists" });
             }
 
             var existingSocialType = await _socialTypeRepository.GetByIdAsync(id);
@@ -120,7 +120,7 @@ namespace API.Controllers
                 {
                     await _deleteImageService.DeleteImage(logoUrl);
                 }
-                return BadRequest(new { Message = "Social type already exists" });
+                return BadRequest(new { message = "Social type already exists" });
             }
         }
 
@@ -141,7 +141,7 @@ namespace API.Controllers
             }
             catch (DbUpdateException ex) when ((ex.InnerException is PostgresException pgEx) && (pgEx.SqlState == "23503"))
             {
-                return BadRequest(new { Message = "Social type is in use" });
+                return BadRequest(new { message = "Social type is in use" });
             }
         }
     }
