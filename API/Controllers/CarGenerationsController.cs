@@ -1,6 +1,5 @@
 using API.DTOs.CarGenerationDTOs;
 using API.IRepositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

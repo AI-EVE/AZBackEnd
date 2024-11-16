@@ -1,5 +1,3 @@
-using System;
-
 namespace API.DTOs.CarSectionDTOs;
 
 public class CarSectionSimpleResponse

@@ -1,5 +1,3 @@
-using System;
-
 namespace API.Filters;
 
 public class CarSectionFilters

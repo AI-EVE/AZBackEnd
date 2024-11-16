@@ -1,8 +1,6 @@
 using API.DTOs.CarSectionDTOs;
 using API.Filters;
 using API.IRepositories;
-using API.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

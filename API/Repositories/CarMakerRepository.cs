@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using API.Data;
 using API.DTOs.CarMakerDTOs;
 using API.IRepositories;

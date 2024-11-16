@@ -1,4 +1,3 @@
-using System;
 using API.Data;
 using API.DTOs.ProductMakerDTOs;
 using API.IRepositories;

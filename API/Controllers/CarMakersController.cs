@@ -1,7 +1,6 @@
 using API.DTOs.CarMakerDTOs;
 using API.IRepositories;
 using API.IServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

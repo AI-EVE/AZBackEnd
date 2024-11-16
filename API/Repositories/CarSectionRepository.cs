@@ -1,4 +1,3 @@
-using System;
 using API.Data;
 using API.DTOs.CarSectionDTOs;
 using API.Filters;

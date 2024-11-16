@@ -1,5 +1,3 @@
-using System;
-
 namespace API.DTOs.ServiceStatusDTOs;
 
 public class UpdateServiceStatusSimpleRequest

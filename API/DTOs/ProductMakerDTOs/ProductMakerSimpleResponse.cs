@@ -1,5 +1,3 @@
-using System;
-
 namespace API.DTOs.ProductMakerDTOs;
 
 public class ProductMakerSimpleResponse

@@ -1,5 +1,3 @@
-using System;
-
 namespace API.DTOs.CarModelDTOs;
 
 public class CarModelSimpleResponse

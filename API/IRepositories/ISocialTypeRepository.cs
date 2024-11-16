@@ -1,4 +1,3 @@
-using System;
 using API.DTOs.SocialTypeDTOs;
 using API.Models;
 

@@ -2,7 +2,6 @@ using API.DTOs.SocialTypeDTOs;
 using API.IRepositories;
 using API.IServices;
 using API.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
